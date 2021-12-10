@@ -17,7 +17,7 @@ const camera = new THREE.PerspectiveCamera(
   0.1,
   1000
 );
-camera.position.set(0, 2, 40);
+camera.position.set(0, 3, 65);
 
 //renderer
 const renderer = new THREE.WebGLRenderer();
@@ -38,7 +38,7 @@ const leafMaterial = new THREE.MeshStandardMaterial({
 });
 
 //road
-const roadGeometry = new THREE.PlaneGeometry(30, 50);
+const roadGeometry = new THREE.PlaneGeometry(40, 100);
 const road = new THREE.Mesh(roadGeometry, roadMaterial);
 road.rotation.x = -Math.PI * 0.5;
 scene.add(road);
@@ -58,11 +58,11 @@ scene.add(tree);
 // leaf.position.y = 12;
 // tree.add(leaf);
 
-for (let i = 0; i < 10; i++) {
+for (let i = 0; i < 25; i++) {
   const tree = new THREE.Group();
   // tree.position.x = 9;
-  tree.position.x = (Math.random() * 1.5 - 0.75) * 20;
-  tree.position.z = (Math.random() - 0.5) * 35;
+  tree.position.x = (Math.random() * 2 - 1) * 20;
+  tree.position.z = (Math.random() - 0.5) * 100;
   scene.add(tree);
 
   const stem = new THREE.Mesh(new THREE.BoxGeometry(1, 10, 1), steMaterial);
@@ -81,11 +81,12 @@ for (let i = 0; i < 10; i++) {
 const ambientLight = new THREE.AmbientLight(0xffffff, 1);
 scene.add(ambientLight);
 
-const directionalLight = new THREE.DirectionalLight(0x00ffff, 0.5);
+const directionalLight = new THREE.DirectionalLight(0x00ffff, 0.7);
+directionalLight.position.set(3, 3, 0);
 scene.add(directionalLight);
 
 //fog
-const fog = new THREE.Fog("#262837", 100, 1);
+const fog = new THREE.Fog("#262837", 50, 7);
 scene.fog = fog;
 
 //Control
@@ -101,10 +102,29 @@ function animate() {
   // control.update();
 
   //camera-control
-  // camera.position.z += -elapsedTime * 0.01;
+  //ぐるぐる周回させる。
+  // camera.position.x = Math.cos(Math.PI * elapsedTime * 0.15) * 20;
+  // camera.position.z = Math.sin(Math.PI * elapsedTime * 0.15) * 20;
+  camera.lookAt(0, 3, 0);
+  // camera.position.z += -elapsedTime * 0.1;
+  // console.log(camera.position.z); //-40で端っこ。
 
   renderer.render(scene, camera);
   requestAnimationFrame(animate);
 }
+
+window.addEventListener("resize", () => {
+  // Update sizes
+  size.width = window.innerWidth;
+  size.height = window.innerHeight;
+
+  // Update camera
+  camera.aspect = size.width / size.height;
+  camera.updateProjectionMatrix();
+
+  // Update renderer
+  renderer.setSize(size.width, size.height);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+});
 
 animate();
