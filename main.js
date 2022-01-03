@@ -89,9 +89,9 @@ scene.add(directionalLight);
 const fog = new THREE.Fog("#262837", 50, 7);
 scene.fog = fog;
 
-//Control
-// const control = new OrbitControls(camera, renderer.domElement);
-// control.enableDamping = true;
+// Control;
+const control = new OrbitControls(camera, renderer.domElement);
+control.enableDamping = true;
 
 const clock = new THREE.Clock();
 
@@ -99,12 +99,12 @@ const clock = new THREE.Clock();
 function animate() {
   const elapsedTime = clock.getElapsedTime();
 
-  // control.update();
+  control.update();
 
   //camera-control
   //ぐるぐる周回させる。
-  // camera.position.x = Math.cos(Math.PI * elapsedTime * 0.15) * 20;
-  // camera.position.z = Math.sin(Math.PI * elapsedTime * 0.15) * 20;
+  camera.position.x = Math.cos(Math.PI * elapsedTime * 0.15) * 20;
+  camera.position.z = Math.sin(Math.PI * elapsedTime * 0.15) * 20;
   camera.lookAt(0, 3, 0);
   // camera.position.z += -elapsedTime * 0.1;
   // console.log(camera.position.z); //-40で端っこ。
